@@ -1,0 +1,22 @@
+// ContactLinkingTriggerHandler.apxc
+
+public with sharing class ContactLinkingTriggerHandler {
+	private list <Contact> contactsToCreate = new list <Contact>();
+	
+	public void linkContact(List <Account> newLstAccs) {
+		if (newLstAccs != NULL) {
+			for (Account newAcc : newLstAccs) {
+				if(newAcc.Number_of_location__c != NULL && 
+				   newAcc.Number_of_location__c > 0 && ) {
+					for(Integer contactCount = 0; contactCount < newAcc.Number_of_location__c; contactCount++) {
+						contactsToCreate.add(new Contact(FirstName = newAcc.FirstName, LastName = newAcc.LastName+' '+contactCount, AccountId = newAcc.ID));
+					}
+				}
+			}
+		}
+		
+		if(!contactsToCreate.isEmpty()){
+			Database.insert(contactsToCreate);
+		}
+	}
+}
