@@ -1,0 +1,17 @@
+/* Trigger to create a number of equal contact of Number_of_location__c  whenever a account is created but the thing is that...
+Account has one custom field named "Number_of_location__c" */
+// ------------------------------------------------------------------------------------------
+
+//ContactLinkingTrigger.apxt
+
+trigger ContactLinkingTrigger on Account(after insert) {
+	ContactLinkingTriggerHandler objHandler = new ContactLinkingTriggerHandler();
+	if (trigger.isAfter){
+		if (trigger.isInsert) {
+			if(!CheckRecursive.firstCall) {
+				CheckRecursive.firstCall = true;
+				objHandler.linkContact(trigger.new);
+			}
+		}
+	}
+}
