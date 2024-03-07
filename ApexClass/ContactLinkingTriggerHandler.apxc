@@ -4,19 +4,44 @@ public with sharing class ContactLinkingTriggerHandler {
 	private list <Contact> contactsToCreate = new list <Contact>();
 	
 	public void linkContact(List <Account> newLstAccs) {
-		if (newLstAccs != NULL) {
-			for (Account newAcc : newLstAccs) {
-				if(newAcc.Number_of_location__c != NULL && 
-				   newAcc.Number_of_location__c > 0 && ) {
-					for(Integer contactCount = 0; contactCount < newAcc.Number_of_location__c; contactCount++) {
-						contactsToCreate.add(new Contact(FirstName = newAcc.FirstName, LastName = newAcc.LastName+' '+contactCount, AccountId = newAcc.ID));
-					}
+		if (newLstAccs != null) {
+			processAccounts(newLstAccs);
+		}
+	}
+	
+	private void processAccounts(List <Account> newLstAccs) {
+		for (Account newAcc : newLstAccs) {
+			if (shouldCreateContacts(newAcc)) {
+				createContacts(newAcc);
+			}
+		}
+		insertContacts();
+	}
+	
+	private boolean shouldCreateContacts(Account newAcc) {
+		return newAcc.Number_of_location__c != null && newAcc.Number_of_location__c > 0;
+	}
+	
+	private void createContacts(Account newAcc) {
+		for (Integer contactCount = 0; contactCount < newAcc.Number_of_location__c; contactCount++) {
+			contactsToCreate.add(new Contact(
+				FirstName = newAcc.FirstName, 
+				LastName = newAcc.LastName + ' ' + contactCount, 
+				AccountId = newAcc.ID)
+			);
+		}
+	}
+	
+	private void insertContacts() {
+		if (contactsToCreate != null && !contactsToCreate.isEmpty()) {
+			if (Schema.sObjectType.Contact.isCreateable()) {
+				try {
+					Database.insert(contactsToCreate);
+				} catch (Exception e) {
+					Sytem.debug(logginglevel.ERROR,' Error Occured while crating Contacts :: '+e.getMessage());
 				}
 			}
 		}
-		
-		if(!contactsToCreate.isEmpty()){
-			Database.insert(contactsToCreate);
-		}
 	}
+
 }
