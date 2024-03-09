@@ -1,3 +1,4 @@
+// SecureDeletionTaskTriggerHandler.cls
 public class SecureDeletionTaskTriggerHandler {
 String currentUserProfileName = UserInfo.getProfileId();
     public void deleteTask(List<Task> tasksToDelete) { 
