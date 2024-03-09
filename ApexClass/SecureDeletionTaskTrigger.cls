@@ -6,7 +6,7 @@ trigger SecureDeletionTaskTrigger on Task(before delete) {
 		if (trigger.isDelete) {
 			if(!CheckRecursive.firstCall) {
 				CheckRecursive.firstCall = true;
-				objHandler.linkContact(trigger.old);
+				objHandler.deleteTask(trigger.old);
 			}
 		}
 	}
