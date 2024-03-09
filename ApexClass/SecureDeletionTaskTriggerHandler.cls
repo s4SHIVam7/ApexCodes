@@ -1,5 +1,5 @@
 // SecureDeletionTaskTriggerHandler.cls
-public class SecureDeletionTaskTriggerHandler {
+public with sharing class SecureDeletionTaskTriggerHandler {
 
     public void deleteTask(List<Task> tasksToDelete) { 
         if(tasksToDelete != NULL) {
@@ -12,6 +12,7 @@ public class SecureDeletionTaskTriggerHandler {
     }
 
     private Boolean isSystemAdministrator() {
+        String currentUserProfileName = [SELECT Name FROM Profile WHERE Id = :UserInfo.getProfileId() LIMIT 1].Name;
         return currentUserProfileName == 'System Administrator';
     }
 
