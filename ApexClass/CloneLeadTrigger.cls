@@ -2,7 +2,7 @@
 // CloneLeadTrigger.cls OR CloneLeadTrigger.apxt
 
 trigger CloneLeadTrigger on Lead (after insert) {
-  CLoneLeadTriggerHandler objHandler = new CloneLeadTriggerHandler();
+  CloneLeadTriggerHandler objHandler = new CloneLeadTriggerHandler();
   if(trigger.isAfter) {
     if(trigger.isInsert) {
       if(!CheckRecursive.firstCall) {
